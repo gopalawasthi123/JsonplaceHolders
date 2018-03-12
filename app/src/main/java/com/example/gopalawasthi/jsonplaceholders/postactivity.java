@@ -37,29 +37,27 @@ public class postactivity extends AppCompatActivity {
      Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
-     final int a=   intent.getIntExtra("id",-1);
+        int a=   intent.getIntExtra("id",-1);
 
-        String stringurl = "https://jsonplaceholder.typicode.com/posts";
+        String stringurl = "https://jsonplaceholder.typicode.com/posts?userId="+a;
         postsAsynchronous asynchronous = new postsAsynchronous(new postsAsynchronous.postInterface() {
             @Override
             public void ondownloadingpost(ArrayList<posts> arrayList) {
                 if(arrayList!=null){
                   for(int i =0 ;i <arrayList.size() ; i++){
                       posts myposts = arrayList.get(i);
-                      if(myposts.getUser_id()==a){
-                       postsArrayList.add(myposts.getPost());
+                      postsArrayList.add(myposts.getPost());
                       Log.d("myposts",arrayList.toString());
-                      }
 
                   }
 
                     postsArrayAdapter.notifyDataSetChanged();
 
-                } else
-                    Snackbar.make(listView,"tryagain",Snackbar.LENGTH_SHORT).show();
-
-                listView.setVisibility(View.GONE);
-                progressBar.setVisibility(View.VISIBLE);
+                } else {
+                    Snackbar.make(listView, "tryagain", Snackbar.LENGTH_SHORT).show();
+                }
+                listView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
 
             }
         });

@@ -76,7 +76,7 @@ public class postsAsynchronous extends AsyncTask<String,Void,ArrayList<posts>> {
       JSONArray jsonArray = new JSONArray(result);
      for (int i =0 ; i< jsonArray.length() ; i++) {
          JSONObject jsonObject = jsonArray.getJSONObject(i);
-         String userpost = jsonObject.getString("body");
+         String userpost = jsonObject.getString("title");
          int user_id = jsonObject.getInt("userId");
          int id = jsonObject.getInt("id");
         posts posts1 = new posts(user_id,id,userpost);
