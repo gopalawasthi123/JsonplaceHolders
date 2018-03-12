@@ -28,8 +28,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 setContentView(R.layout.activity_main);
                 Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
                 setSupportActionBar(toolbar);
-                progressBar = findViewById(R.id.progress);
-                listView = findViewById(R.id.listview);
+                progressBar = findViewById(R.id.progressbar);
+                listView = findViewById(R.id.listview1);
                 myusers = new ArrayList<>();
                 arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,myusers);
                 listView.setAdapter(arrayAdapter);
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             if(users!=null){
                for(int i =0 ; i< users.size() ; i++){
                    Users users1 = users.get(i);
-                   myusers.add(users1.getUsername());
+                    myusers.add(users1.getUsername());
 
                }
                arrayAdapter.notifyDataSetChanged();

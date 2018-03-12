@@ -54,7 +54,8 @@ public class Asynchronous extends AsyncTask<String, Void, ArrayList<Users>> {
 
             try {
                 ArrayList<Users > arrayList = parseUsers(result);
-                    return  arrayList;
+                httpsURLConnection.disconnect();
+                return  arrayList;
 
             } catch (JSONException e) {
                 e.printStackTrace();
