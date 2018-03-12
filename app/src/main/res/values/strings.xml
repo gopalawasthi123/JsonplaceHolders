@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">JsonplaceHolders</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_postactivity">postactivity</string>
+</resources>
