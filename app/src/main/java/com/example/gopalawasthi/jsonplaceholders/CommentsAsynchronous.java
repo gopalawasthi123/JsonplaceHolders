@@ -50,6 +50,7 @@ public class CommentsAsynchronous extends AsyncTask<String,Void,ArrayList<Commen
 
             try {
                 ArrayList<Comments> arrayList =fetchcommentsfrominternet(result);
+                return arrayList;
             } catch (JSONException e) {
                 e.printStackTrace();
             }
