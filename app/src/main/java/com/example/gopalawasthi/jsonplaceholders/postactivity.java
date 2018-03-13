@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -15,7 +16,7 @@ import android.widget.ProgressBar;
 import java.util.ArrayList;
 
 
-public class postactivity extends AppCompatActivity {
+public class postactivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     ArrayList<String> postsArrayList;
     ArrayAdapter<String>postsArrayAdapter;
@@ -38,7 +39,6 @@ public class postactivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
         int a=   intent.getIntExtra("id",-1);
-
         String stringurl = "https://jsonplaceholder.typicode.com/posts?userId="+a;
         postsAsynchronous asynchronous = new postsAsynchronous(new postsAsynchronous.postInterface() {
             @Override
@@ -61,6 +61,7 @@ public class postactivity extends AppCompatActivity {
 
             }
         });
+        listView.setOnItemClickListener(this);
         asynchronous.execute(stringurl);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -71,6 +72,17 @@ public class postactivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        int pos = (int) postsArrayAdapter.getItemId(position) + 1;
+        Intent intent = new Intent(this,CommentsActivity.class);
+        intent.putExtra("posts_id",pos);
+        startActivity(intent);
+
+    }
 }

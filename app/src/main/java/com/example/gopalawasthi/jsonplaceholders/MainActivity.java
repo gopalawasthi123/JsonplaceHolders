@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(this,postactivity.class);
                 int a =(int)  id;
-            int ids  =(int) arrayAdapter.getItemId(position);
+            int ids  =(int) arrayAdapter.getItemId(position) +1;
         intent.putExtra("id",ids);
         startActivity(intent);
 
