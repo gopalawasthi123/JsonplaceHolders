@@ -35,7 +35,7 @@ public class CommentsActivity extends AppCompatActivity {
             CommentsAsynchronous commentsAsynchronous = new CommentsAsynchronous(new CommentsAsynchronous.mycommntslistener() {
                 @Override
                 public void onpostcomment(ArrayList<Comments> arrayList) {
-                    if(arrayList!=null){
+                     if(arrayList!=null){
                         for(int i=0 ;i < arrayList.size() ;i++){
                         Comments comments = arrayList.get(i);
                         String b = comments.getComment_name();
