@@ -26,7 +26,7 @@ public class ItemOpenHelper extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
 
         String use = " CREATE TABLE "  +  Contracts.UserdataBase.TABLE_NAME + " ( " +
-                    Contracts.UserdataBase.USER_ID + " INTEGER PRIMARY KEY, " +
+                    Contracts.UserdataBase.USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     Contracts.UserdataBase.USER_NAME + " TEXT )" ;
 
         db.execSQL(use);

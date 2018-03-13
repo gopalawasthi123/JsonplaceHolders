@@ -1,6 +1,9 @@
 package com.example.gopalawasthi.jsonplaceholders;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
  ArrayList <String> myusers;
  ArrayAdapter<String> arrayAdapter;
  ProgressBar progressBar;
+ ItemOpenHelper itemOpenHelper;
 
  @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,12 +32,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 setContentView(R.layout.activity_main);
                 Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
                 setSupportActionBar(toolbar);
+                itemOpenHelper = ItemOpenHelper.getInstance(this);
                 progressBar = findViewById(R.id.progressbar);
                 listView = findViewById(R.id.listview1);
                 myusers = new ArrayList<>();
                 arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,myusers);
                 listView.setAdapter(arrayAdapter);
-
+               // myusers =  fetchdatafromdatabase();
+               if(myusers.size()!=0) {
+                   arrayAdapter.notifyDataSetChanged();
+               }
                 FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
                 fab.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -42,7 +50,23 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     }
                 });
                 listView.setOnItemClickListener(this);
-    }
+
+        }
+
+            private ArrayList<String> fetchdatafromdatabase() {
+              ArrayList<String> arrayList = new ArrayList<>();
+                SQLiteDatabase database = itemOpenHelper.getReadableDatabase();
+                Cursor cursor = database.query(Contracts.UserdataBase.TABLE_NAME,null,null,null,null,null,null);
+
+                while (cursor.moveToNext()){
+                    String user = cursor.getColumnName(cursor.getColumnIndex(Contracts.UserdataBase.USER_NAME));
+                    arrayList.add(user);
+                }
+                if(arrayList.size()!=0)
+            return arrayList;
+                else
+                    return null;
+        }
 
     private void fetchdatafromnetwork() {
         progressBar.setVisibility(View.VISIBLE);
@@ -54,9 +78,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             if(users!=null){
                for(int i =0 ; i< users.size() ; i++){
                    Users users1 = users.get(i);
+                   SQLiteDatabase sqLiteDatabase = itemOpenHelper.getWritableDatabase();
+                   ContentValues contentValues = new ContentValues();
+                   contentValues.put(Contracts.UserdataBase.USER_NAME,users1.getUsername());
+
+                   long id = sqLiteDatabase.insert(Contracts.UserdataBase.TABLE_NAME,null,contentValues);
                     myusers.add(users1.getUsername());
 
                }
+
                arrayAdapter.notifyDataSetChanged();
             }else{
                 Snackbar.make(listView,"tryagain",Snackbar.LENGTH_SHORT).show();
