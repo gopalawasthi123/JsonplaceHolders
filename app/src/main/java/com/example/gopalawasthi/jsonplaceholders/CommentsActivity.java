@@ -1,6 +1,7 @@
 package com.example.gopalawasthi.jsonplaceholders;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,9 +15,10 @@ import java.util.ArrayList;
 public class CommentsActivity extends AppCompatActivity {
 
     ListView listView;
-    ArrayList<String> commentsarraylist;
+    ArrayList<String> commentsarraylist ;
     ArrayAdapter<String> commentsArrayAdapter;
     ProgressBar progressBar;
+    ItemOpenHelper itemOpenHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,7 @@ public class CommentsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_comments);
         listView = findViewById(R.id.commentslist);
         progressBar = findViewById(R.id.progressbar);
+        //itemOpenHelper = ItemOpenHelper.getInstance(this);
         commentsarraylist = new ArrayList<>();
         commentsArrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,commentsarraylist);
         listView.setAdapter(commentsArrayAdapter);
@@ -51,4 +54,5 @@ public class CommentsActivity extends AppCompatActivity {
             });
             commentsAsynchronous.execute(urlstring);
     }
-}
+
+  }

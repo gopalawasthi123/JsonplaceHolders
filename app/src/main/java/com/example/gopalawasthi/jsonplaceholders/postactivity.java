@@ -1,6 +1,9 @@
 package com.example.gopalawasthi.jsonplaceholders;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -20,6 +23,7 @@ public class postactivity extends AppCompatActivity implements AdapterView.OnIte
 
     ArrayList<String> postsArrayList;
     ArrayAdapter<String>postsArrayAdapter;
+    ItemOpenHelper itemOpenHelper ;
     ListView listView;
     ProgressBar progressBar ;
     @Override
@@ -27,13 +31,15 @@ public class postactivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_postactivity);
        listView = findViewById(R.id.postlist);
+       itemOpenHelper = ItemOpenHelper.getInstance(this);
        postsArrayList = new ArrayList<>();
+      // postsArrayList = fetchdatafromdatabase();
        postsArrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,postsArrayList);
         progressBar = findViewById(R.id.progress);
         listView.setAdapter(postsArrayAdapter);
 
         listView.setVisibility(View.GONE);
-     progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
 
      Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -46,6 +52,12 @@ public class postactivity extends AppCompatActivity implements AdapterView.OnIte
                 if(arrayList!=null){
                   for(int i =0 ;i <arrayList.size() ; i++){
                       posts myposts = arrayList.get(i);
+                     SQLiteDatabase database = itemOpenHelper.getWritableDatabase();
+                      ContentValues contentValues = new ContentValues();
+                      contentValues.put(Contracts.Posts.POST,myposts.getPost());
+                      contentValues.put(Contracts.Posts.POST_ID,myposts.getId());
+                      contentValues.put(Contracts.Posts.USER_ID,myposts.getUser_id());
+                     long id = database.insert(Contracts.Posts.TABLE_NAME,null,contentValues);
                       postsArrayList.add(myposts.getPost());
                       Log.d("myposts",arrayList.toString());
 
@@ -68,12 +80,25 @@ public class postactivity extends AppCompatActivity implements AdapterView.OnIte
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+             //
             }
         });
 
 
+    }
+
+
+
+    private ArrayList<String> fetchdatafromdatabase() {
+        SQLiteDatabase sqLiteDatabase = itemOpenHelper.getReadableDatabase();
+        ArrayList<String > postlist = new ArrayList<>();
+        Cursor cursor = sqLiteDatabase.query(Contracts.Posts.TABLE_NAME,null,null,null,null,null,null,null);
+        while(cursor.moveToNext()){
+            String posts = cursor.getString(cursor.getColumnIndex(Contracts.Posts.POST));
+            postlist.add(posts);
+
+        }
+        return postlist ;
     }
 
     @Override

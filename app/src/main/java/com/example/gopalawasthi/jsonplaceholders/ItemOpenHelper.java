@@ -26,10 +26,18 @@ public class ItemOpenHelper extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
 
         String use = " CREATE TABLE "  +  Contracts.UserdataBase.TABLE_NAME + " ( " +
-                    Contracts.UserdataBase.USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    Contracts.UserdataBase.USER_NAME + " TEXT )" ;
+                    Contracts.UserdataBase.USER_ID + " INTEGER PRIMARY KEY, " +
+                    Contracts.UserdataBase.USER_NAME + " TEXT," + " UNIQUE (" + Contracts.UserdataBase.USER_ID + ") ON CONFLICT REPLACE )" ;
 
         db.execSQL(use);
+
+        String postsuse = " CREATE TABLE " + Contracts.Posts.TABLE_NAME + " ( " +
+                            Contracts.Posts.POST_ID + " INTEGER PRIMARY KEY, " +
+                            Contracts.Posts.POST + " TEXT, " +
+                            Contracts.Posts.USER_ID + " INTEGER " +
+                            " FOREIGN KEY (" + Contracts.Posts.USER_ID + ") REFERENCES " + Contracts.UserdataBase.TABLE_NAME + " (" + Contracts.UserdataBase.USER_ID + ") ON DELETE CASCADE )";
+
+            db.execSQL(postsuse);
     }
 
     @Override

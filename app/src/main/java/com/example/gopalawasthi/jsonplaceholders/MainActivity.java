@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
  ListView listView;
  ArrayList <String> myusers;
  ArrayAdapter<String> arrayAdapter;
+
  ProgressBar progressBar;
  ItemOpenHelper itemOpenHelper;
 
@@ -36,12 +37,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 progressBar = findViewById(R.id.progressbar);
                 listView = findViewById(R.id.listview1);
                 myusers = new ArrayList<>();
+                myusers =  fetchdatafromdatabase();
                 arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,myusers);
                 listView.setAdapter(arrayAdapter);
-               // myusers =  fetchdatafromdatabase();
-               if(myusers.size()!=0) {
                    arrayAdapter.notifyDataSetChanged();
-               }
+
+
                 FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
                 fab.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -59,13 +60,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 Cursor cursor = database.query(Contracts.UserdataBase.TABLE_NAME,null,null,null,null,null,null);
 
                 while (cursor.moveToNext()){
-                    String user = cursor.getColumnName(cursor.getColumnIndex(Contracts.UserdataBase.USER_NAME));
+                    String user = cursor.getString(cursor.getColumnIndex(Contracts.UserdataBase.USER_NAME));
+
                     arrayList.add(user);
                 }
-                if(arrayList.size()!=0)
-            return arrayList;
-                else
-                    return null;
+                return arrayList;
         }
 
     private void fetchdatafromnetwork() {
@@ -81,10 +80,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                    SQLiteDatabase sqLiteDatabase = itemOpenHelper.getWritableDatabase();
                    ContentValues contentValues = new ContentValues();
                    contentValues.put(Contracts.UserdataBase.USER_NAME,users1.getUsername());
+                   contentValues.put(Contracts.UserdataBase.USER_ID,users1.getId());
 
                    long id = sqLiteDatabase.insert(Contracts.UserdataBase.TABLE_NAME,null,contentValues);
-                    myusers.add(users1.getUsername());
-
+                   myusers = fetchdatafromdatabase();
+                   arrayAdapter = new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_list_item_1,myusers);
+                   listView.setAdapter(arrayAdapter);
                }
 
                arrayAdapter.notifyDataSetChanged();

@@ -15,4 +15,10 @@ public class Contracts {
         public static final String USER_ID = "id";
 
     }
+    static class Posts{
+        public static final String TABLE_NAME = "posttable";
+        public static final String POST = "post";
+        public static  final String POST_ID = "id";
+        public static final String USER_ID = "user_id";
+    }
 }
